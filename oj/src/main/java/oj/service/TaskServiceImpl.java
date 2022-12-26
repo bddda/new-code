@@ -70,7 +70,7 @@ public class TaskServiceImpl implements TaskService{
         CommandUtil.run(compileCmd,null,COMPILE_ERROR);
         //如果编译出错,则这个错误信息就会被记录到COMPILE_ERROR文件中,如果没有出错则这个文件不存在
         String compileError = FileUtil.readFile(COMPILE_ERROR);
-        if (compileError == null || !compileError.equals("")){
+        if (!compileError.equals("")){
 //            System.out.println("编译错误！");
             //编译出错直接返回answer
             answer.setError(1);
@@ -85,7 +85,7 @@ public class TaskServiceImpl implements TaskService{
         CommandUtil.run(runCmd,STDOUT,STDERR);
         //读取运行时标准错误的文件,如果为空则返回answer,如果不为空则继续执行下面的逻辑
         String runStderr = FileUtil.readFile(STDERR);
-        if (runStderr == null || !runStderr.equals("")){
+        if (!runStderr.equals("")){
 //            System.out.println("运行错误！");
             //设置运行错误返回结果
             answer.setError(2);
