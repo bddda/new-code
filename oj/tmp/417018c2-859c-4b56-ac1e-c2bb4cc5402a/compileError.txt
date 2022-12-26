@@ -1,0 +1,6 @@
+.\tmp\417018c2-859c-4b56-ac1e-c2bb4cc5402a\Solution.java:4: 错误: 找不到符号
+        System.out.prinln("hello world!");
+                  ^
+  符号:   方法 prinln(String)
+  位置: 类型为PrintStream的变量 out
+1 个错误

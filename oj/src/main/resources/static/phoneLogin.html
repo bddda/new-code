@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手机号登陆</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+<!-- 导航栏 -->
+<div class="nav">
+    <!-- logo -->
+    <img src="img/vx.jpg" alt="">
+    <!-- 标题 -->
+    <span class="title">Java 在线OJ 系统</span>
+    <!-- 空白的占位符 -->
+    <span class="spacer"></span>
+    <!-- 右侧的几个链接 -->
+    <a class="navbar-brand font-weight-bold" href="index.html">主页</a>
+    <a class="navbar-brand font-weight-bold" href="javascript:void(0);"  onclick=logout()>注销</a>
+</div>
+
+<!-- 登录页面的页面容器, 为了和其他页面样式区分开, 使用不同的类名 -->
+<div class="login-container">
+    <div class="login-dialog">
+            <!-- 标题 -->
+            <h3>登录</h3>
+            <!-- 输入用户名 -->
+            <div class="row">
+                <span>手机号</span>
+                <input type="text" id="phoneNumber" name="phoneNumber">
+            </div>
+            <!-- 输入密码 -->
+            <div class="row">
+                <span>验证码</span>
+                <input type="text" id="code" name="code">
+            </div>
+
+            <div class="row submit-row">
+                <!-- <button id="submit">提 交</button> -->
+                <button id="getcode" onclick=getVarCode() >点击获取验证码</button>
+            </div>
+
+            <!-- 提交按钮 -->
+            <div class="row submit-row">
+                <!-- <button id="submit">提 交</button> -->
+                <input id="submit" type="submit" value="登 陆" onclick=login()>
+            </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<script type="text/javascript">
+    function login(){ //手机号 + 验证码 登录
+        let phoneNumber = document.querySelector("#phoneNumber");
+        let code = document.querySelector("#code");
+        $.ajax({
+            url:"/state/phoneLogin"+"?phone="+phoneNumber.value+"&code="+code.value,
+            type:"POST",
+            success:function (data,status){
+                alert(data.message);
+                if (data.state === 4009){ //登陆成功跳转到主页
+                    location.href = "index.html";
+                }
+            }
+        });
+    }
+    function getVarCode(){   //发送验证码,同时禁用按钮
+        f(); //禁用按钮
+        //获取输入框的手机号
+        let phoneNumber = document.querySelector("#phoneNumber");
+        $.ajax({
+            url:"/state/phoneSend"+"?phone="+phoneNumber.value,
+            type:"POST",
+            success:function (data,status){
+                alert(data.message);
+            }
+        });
+
+        function f(){
+            //将按钮禁用
+            let btn = document.querySelector("#getcode");
+            btn.disabled = true;
+            btn.style.cursor = "not-allowed";//鼠标显示禁用图标
+            //按钮显示60秒倒计时
+            let second = 120;
+            //setInterval重复调用一个函数或执行一个代码片段，在每次调用之间具有固定的时间间隔。
+            let counter = setInterval(function () {
+                second--;
+                if (second > 0){
+                    btn.innerText = second + "秒后重新获取";
+                }
+            },1000);
+            //60秒时间间隔到了之后清除倒计时，按钮恢复点击功能
+            //全局的 setTimeout() 方法设置一个定时器，该定时器在定时器到期后执行一个函数或指定的一段代码。
+            setTimeout(function () {
+                //清楚倒计时定时器
+                clearInterval(counter);
+                //按钮恢复
+                btn.innerHTML = "获取验证码";
+                btn.disabled = false;
+                btn.style.cursor = "";
+            },30000);
+        }
+    }
+
+    function logout(){
+        $.ajax({
+            url:"state/loginOut",
+            type:'POST',
+            success:function (data,status){
+                if (data.state===5001){
+                    alert(data.message);
+                }else if (data.state===5002){
+                    alert(data.message);
+                    location.href = "login.html";
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

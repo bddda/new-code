@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="oj.mapper.ProblemMapper">
+    <select id="selectAll" resultType="oj.pojo.Problem">
+        select id,title,level from oj_table
+    </select>
+
+    <select id="selectOne" resultType="oj.pojo.Problem">
+        select * from oj_table where id =#{id}
+    </select>
+
+    <insert id="insert" parameterType="oj.pojo.Problem">
+        insert into oj_table values (0,#{title},#{level},#{description},#{template},#{testCode})
+    </insert>
+
+    <delete id="delete">
+        delete from oj_table where id=#{id}
+    </delete>
+
+    <select id="selectByLikeTitle" resultType="oj.pojo.Problem">
+        select id,title from oj_table where title like '%${likeTitle}%'
+    </select>
+
+    <update id="updateById" >
+        update oj_table set title=#{title},level=#{level},
+                            description=#{description},template=#{template},
+                            testCode=#{testCode} where id=#{id}
+    </update>
+    <!--分页查询-->
+    <select id="selectAll1" resultType="oj.pojo.Problem">
+        select * from oj_table
+    </select>
+
+</mapper>

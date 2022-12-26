@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: oj
+# 配置Mysql数据库相
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    name: defaultDataSource
+    url: jdbc:mysql://localhost:3306/oj_database?serverTimezone=UTC
+    username: root
+    password: ZHW20000911
+#配置redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+#热部署生效(true为开启，false为不开启，开发者根据喜好选择是否开启)
+  devtools:
+    restart:
+      enabled: true
+#一般使用SMTP服务器 简单邮件传输协议进行发送邮件
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username: 2396437178@qq.com
+    password: kizkepkodefldigj
+    from: 2396437178@qq.com
+server:
+  port: 8080
+
+#下面这些内容是为了让MyBatis映射
+#指定Mybatis的Mapper文件
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: oj.pojo
+
+# pagehelper   分页
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

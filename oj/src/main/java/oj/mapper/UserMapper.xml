@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="oj.mapper.UserMapper">
+    <insert id="insert" parameterType="oj.pojo.User">
+        insert into
+            user
+            (id,username,password,isAdmin,salt,email)
+            values
+            (0,#{username},#{password},#{isAdmin},#{salt},#{email})
+    </insert>
+    <select id="selectById" resultType="oj.pojo.User" parameterType="int">
+        select * from user where id=#{id}
+    </select>
+    <select id="selectByName" resultType="oj.pojo.User" parameterType="java.lang.String">
+        select * from user where username like #{username}
+    </select>
+    <select id="selectByEmail" resultType="oj.pojo.User" parameterType="java.lang.String">
+        select * from user where email like #{email}
+    </select>
+    <update id="updatePassword">
+        update user set password=#{finalPassword} where username=#{username}
+    </update>
+    <select id="selectAll" resultType="oj.pojo.User">
+        select * from user
+    </select>
+    <select id="selectByLikeName" resultType="oj.pojo.User" parameterType="java.lang.String">
+        select * from user where username like #{likeName}
+    </select>
+    <select id="selectByNameAndId" resultType="oj.pojo.User">
+        select * from user where id=#{id} and username=#{username}
+    </select>
+    <update id="updateUser">
+        update user set username=#{username},eamil=#{eamil} where id=#{id}
+    </update>
+    <delete id="deleteUser">
+        delete from user where id=#{id}
+    </delete>
+</mapper>
